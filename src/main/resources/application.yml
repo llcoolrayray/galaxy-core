@@ -1,0 +1,46 @@
+server:
+  port: 61000
+  servlet:
+    context-path: /galaxy/core/api/rest/v1
+spring:
+  application:
+    name: galaxy-core
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled
+      routes:
+        - id: galaxy-collector-route
+          predicates:
+            - Path=/galaxy/collector/**
+          uri: lb://galaxy-collector
+          filters:
+            - RewritePath=/my-service/(?<segment>.*), /${segment}
+    nacos:
+      discovery:
+        server-addr: 10.169.82.32:8848
+      config:
+        server-addr: ${spring.cloud.nacos.discovery.server-addr}
+        file-extension: properties
+  # spring cloud 2021 版本之后，需要用以下方式导入 nacos 的配置文件
+  config:
+    import:
+      - nacos:${spring.application.name}.properties?refresh=true
+  datasource:
+    url: jdbc:mysql://10.169.82.66:3306/mtp
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    show-sql: true
+    type: com.alibaba.druid.pool.DruidDataSource
+  # 将应用配置为反应式应用，从而与 Spring Cloud Gateway 兼容
+  main:
+    web-application-type: reactive
+mybatis:
+  #配置 mapper 文件路径
+  mapper-locations: classpath:mapper/*.xml
+  #配置 mapper 中实体类的路径
+  type-aliases-package: com.micro.service.galaxycore.pojo
+
+
