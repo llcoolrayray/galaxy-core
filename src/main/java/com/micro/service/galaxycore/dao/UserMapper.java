@@ -1,7 +1,11 @@
 package com.micro.service.galaxycore.dao;
 
+import com.micro.service.galaxycore.pojo.Role;
 import com.micro.service.galaxycore.pojo.User;
 import org.apache.ibatis.annotations.*;
+import org.apache.ibatis.mapping.FetchType;
+
+import java.util.List;
 
 /**
  * @author Wang.Rui.Barney
@@ -17,11 +21,21 @@ public interface UserMapper {
     @Options(useGeneratedKeys = true, keyProperty = "id")
     void createUser(User user);
 
-    @Select("select * from user where username = #{username}")
-    User findUserByUsername(String username);
-
     @Insert("INSERT INTO user_role(user_id, role_id) VALUES (#{user_id}, #{role_id})")
     void createUserRole(@Param("user_id") long userId, @Param("role_id") long roleId);
 
+    @Select("SELECT u.*, ur.role_id FROM user u\n" +
+            "LEFT JOIN user_role ur ON u.id = ur.user_id\n" +
+            "WHERE u.username = #{username}")
+    @Results(value = {
+            @Result(
+                    property = "roles", column = "role_id",
+                    javaType = List.class, many = @Many(select = "selectRolesByUser")
+            )
+    })
+    User findUserByUsername(String username);
+
+    @Select("select * from role where id = #{id}")
+    List<Role> selectRolesByUser(long id);
 
 }

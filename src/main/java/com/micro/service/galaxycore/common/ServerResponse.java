@@ -1,7 +1,5 @@
 package com.micro.service.galaxycore.common;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-
 import java.io.Serializable;
 
 /**
@@ -9,7 +7,6 @@ import java.io.Serializable;
  * @date 2024/01/23 10:56
  * @description
  */
-@JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
 public class ServerResponse<T> implements Serializable {
 
     private final int status;

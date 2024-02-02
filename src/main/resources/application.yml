@@ -6,17 +6,17 @@ spring:
   application:
     name: galaxy-core
   cloud:
-    gateway:
-      discovery:
-        locator:
-          enabled
-      routes:
-        - id: galaxy-collector-route
-          predicates:
-            - Path=/galaxy/collector/**
-          uri: lb://galaxy-collector
-          filters:
-            - RewritePath=/my-service/(?<segment>.*), /${segment}
+#    gateway:
+#      discovery:
+#        locator:
+#          enabled
+#      routes:
+#        - id: galaxy-collector-route
+#          predicates:
+#            - Path=/galaxy/collector/**
+#          uri: lb://galaxy-collector
+#          filters:
+#            - RewritePath=/my-service/(?<segment>.*), /${segment}
     nacos:
       discovery:
         server-addr: 10.169.82.32:8848
@@ -35,8 +35,8 @@ spring:
     show-sql: true
     type: com.alibaba.druid.pool.DruidDataSource
   # 将应用配置为反应式应用，从而与 Spring Cloud Gateway 兼容
-  main:
-    web-application-type: reactive
+#  main:
+#    web-application-type: reactive
 mybatis:
   #配置 mapper 文件路径
   mapper-locations: classpath:mapper/*.xml

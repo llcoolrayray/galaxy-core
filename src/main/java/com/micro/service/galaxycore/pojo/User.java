@@ -3,6 +3,9 @@ package com.micro.service.galaxycore.pojo;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.Serializable;
+import java.util.List;
+
 /**
  * @author Wang.Rui.Barney
  * @date 2024/01/22 13:30
@@ -10,13 +13,14 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class User {
+public class User implements Serializable {
     private long id;
     private String username;
     private String password;
     private String salt;
     private String email;
     private int phone;
+    private List<Role> roles;
 
     /**
      * 使用组合盐值
